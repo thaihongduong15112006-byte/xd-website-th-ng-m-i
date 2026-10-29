@@ -1,0 +1,6 @@
+<?php
+require_once __DIR__ . '/../includes/auth.php'; requireAdmin(); require_once __DIR__ . '/../config/database.php';
+if(isset($_GET['delete'])) { $id=(int)$_GET['delete']; if($id !== (int)$_SESSION['user']['id']) { $stmt=$conn->prepare("DELETE FROM users WHERE id=? AND role='user'"); $stmt->execute([$id]); } header('Location: users.php'); exit; }
+$users=$conn->query("SELECT id,fullname,username,role,created_at FROM users ORDER BY id DESC")->fetchAll(); require_once __DIR__ . '/../includes/header.php'; ?>
+<div class="panel"><h1>Quản lý người dùng</h1><a class="btn gray" href="index.php">← Trang quản trị</a><div class="table-wrap"><table><tr><th>ID</th><th>Họ tên</th><th>Tên đăng nhập</th><th>Quyền</th><th>Ngày tạo</th><th>Thao tác</th></tr><?php foreach($users as $u): ?><tr><td><?= $u['id'] ?></td><td><?= htmlspecialchars($u['fullname']) ?></td><td><?= htmlspecialchars($u['username']) ?></td><td><?= htmlspecialchars($u['role']) ?></td><td><?= htmlspecialchars($u['created_at']) ?></td><td><?php if($u['role']==='user'): ?><a class="btn danger" onclick="return confirm('Xóa tài khoản này?')" href="?delete=<?= $u['id'] ?>">Xóa</a><?php else: ?>—<?php endif; ?></td></tr><?php endforeach; ?></table></div></div>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>

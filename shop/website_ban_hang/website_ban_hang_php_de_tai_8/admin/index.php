@@ -1,0 +1,4 @@
+<?php require_once __DIR__ . '/../includes/auth.php'; requireAdmin(); require_once __DIR__ . '/../config/database.php'; require_once __DIR__ . '/../includes/header.php';
+$productCount = $conn->query('SELECT COUNT(*) FROM products')->fetchColumn(); $categoryCount = $conn->query('SELECT COUNT(*) FROM categories')->fetchColumn(); $userCount = $conn->query("SELECT COUNT(*) FROM users WHERE role='user'")->fetchColumn(); ?>
+<div class="panel"><h1>Trang quản trị Admin</h1><p>Chọn chức năng muốn quản lý:</p><div class="admin-links"><a class="btn" href="categories.php">Quản lý danh mục</a><a class="btn" href="products.php">Quản lý sản phẩm</a><a class="btn" href="users.php">Quản lý người dùng</a></div><hr><p>Tổng sản phẩm: <b><?= $productCount ?></b></p><p>Tổng danh mục: <b><?= $categoryCount ?></b></p><p>Tài khoản người dùng: <b><?= $userCount ?></b></p></div>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
